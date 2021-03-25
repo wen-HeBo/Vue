@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <input type="button" value="浪起来" @click="move">
+        <input type="button" value="低调" @click="stop">
+        <h4> {{msg}} </h4>
+        <p></p>
+    </div>
+    <div id="app2">
+        <input type="text" v-model="n1">
+        <select v-model='opt'>
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="text" v-model='n2'>
+        <input type="button" value="=" @click='cs'>
+        <input type="text" v-model='result'>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data:{
+                msg:'猥琐发育！别浪~~',
+                intervalId: null
+            },
+            methods: {
+                move(){
+                    if(this.intervalId != null)return;
+                    this.intervalId = setInterval(() => {
+                        var start = this.msg.substring(0,1)
+                        var end = this.msg.substring(1);
+                        this.msg = end + start;
+                    }, 400);
+                },
+                stop(){
+                    clearInterval(this.intervalId)
+                    this.intervalId=null;
+                }
+            },
+        })
+        var vm2 = new Vue({
+            el: '#app2',
+            data:{
+                n1: 0,
+                n2: 0,
+                result: 0,
+                opt: '+'
+            },
+            methods: {
+                cs(){
+                    switch(this.opt){
+                        case '+':
+                            this.result = parseInt(this.n1) + parseInt(this.n2);
+                            break;
+                        case '-':
+                            this.result = parseInt(this.n1) - parseInt(this.n2);
+                            break;
+                        case '*':
+                            this.result = parseInt(this.n1) * parseInt(this.n2);
+                            break;
+                        case '/':
+                            this.result = parseInt(this.n1) / parseInt(this.n2);
+                            break;
+
+                    }
+                 }
+                    
+            },
+        })
+    </script>
+</body>
+</html>

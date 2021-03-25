@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p v-cloak>{{ msg }}</p>
+        <div v-text="msg"></div>
+        <div v-html="msg2"></div>
+        <input type="button" value="按钮" :title="mytittle + '123' " @click="show">
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'欢迎学习Vue',
+                msg2:'<h1>哈哈哈我是一个骄傲的</h1>',
+                mytittle:'这是一个自己决定的一个tille'
+            },
+            methods: {
+                show:function () {
+                    alert("hello")
+                }
+            },
+        })
+    </script>
+</body>
+</html>

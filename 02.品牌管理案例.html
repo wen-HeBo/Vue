@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 添加面板 -->
+        
+        <div class="panel panel-primary">
+              <div class="panel-heading">
+                    <h3 class="panel-title">添加新品牌</h3>
+              </div>
+              <div class="panel-body form-inline">
+                    
+                    <div class="input-group">
+                        <div class="input-group-addon" >编号</div>
+                        <input type="text" class="form-control" v-model="id">
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-addon" >品牌名称</div>
+                        <input type="text" class="form-control" v-model="name">
+                    </div>
+
+                    
+                    <div class="input-group">
+                         <button type="button" class="btn btn-primary" @click="add">添加</button>
+                    </div>
+
+                    
+
+                    <div class="input-group">
+                        <div class="input-group-addon">按名称搜索</div>
+                        <input type="text" class="form-control" v-model="keyword">
+                    </div>
+                    
+              </div>
+        </div>
+        
+
+        <!-- 数据表格 -->
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>名称</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in search()" :key="item.id">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.ctime | dateFormat}}</td>
+                    <td>
+                        <a href="#" @click.prevent="remove(item.id)">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.filter('dateFormat',function(originval){
+            const dt = new Date(originval)
+
+            const y = dt.getFullYear()
+            const m = (dt.getMonth() + 1 + '').padStart(2,'0')
+            const d = (dt.getDate() + '').padStart(2,'0')
+
+            const hh = (dt.getHours() + '').padStart(2,'0')
+            const mm = (dt.getMinutes() + '').padStart(2,'0')
+            const ss = (dt.getSeconds() + '').padStart(2,'0')
+
+            const dtstr = `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+
+            return dtstr
+        })
+
+        var mv = new Vue({
+            el: '#app',
+            data:{
+                id:'',
+                name:'',
+                keyword:'',
+                list:[
+                    {id: 1, name:"奔驰", ctime: new Date()},
+                    {id: 2, name:"宝马", ctime: new Date()},
+                    {id: 3, name:"五菱宏光", ctime: new Date()},
+                    {id: 4, name:"路虎", ctime :new Date()},]
+            },
+            methods: {
+                add(){
+                    const newInfo = {id: this.id, name: this.name, ctime: new Date()}
+                    this.list.push(newInfo)
+                    this.id = this.name = '';
+                },
+                remove(id){
+                    //arr.splice(索引,1)
+                    /*
+                    *根据传递的id获取其在数组对应的索引值
+                    *调用数组splice()删除对应item项
+                    */
+                //    for(let i = 0;i < this.list.length;i++){
+                //        if(id == this.list[i].id){
+                //            this.list.splice(i,1);
+                //            break;
+                //        }
+                //    }
+
+                //ES6
+                const i = this.list.findIndex(item => item.id === id)
+                this.list.splice(i,1)
+                }
+                ,
+                search(){
+                    const newArr = []
+                    this.list.forEach(element => {
+                        if(element.name.indexOf(this.keyword) !== -1){
+                            newArr.push(element)
+                        }
+                    });
+                    return newArr
+                    //数组的filter 的方法，需要给定一个过滤条件
+                    //filter 的返回值，就是符合条件的新数组
+                    //注意 filter 不会修改原数组
+                    //return this.list.filter(item => item.name.inckudes(this.keyword))
+                }
+            }
+        })
+    </script>
+</body>
+</html>
