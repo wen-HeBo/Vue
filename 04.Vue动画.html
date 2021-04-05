@@ -1,0 +1,127 @@
+<!-- 使用过渡类名实现动画效果 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+    <link rel="stylesheet" href="./lib/animate.css">
+
+    <!-- 2.在 header 区域，自定义两组动画的类名 -->
+    <style>
+        /* 定义lic元素入场前和离场后的样式 */
+       .test-enter,
+       .test-leave-to{
+           transform: translateX(150px);
+           opacity: 0;
+       }
+       /* 定义元素入场阶段和离场阶段的过渡效果 */
+       .test-enter-active,
+       .test-leave-active{
+           transition: all 0.8s ease;
+       }
+       /* 定义元素在标准流中的样式，也是入场后和离场前 不建议使用 v-enter-to、v-leave */
+       h3{
+           transform: translateX(50px);
+           opacity: 0.5;
+       }
+
+       /* 为 v-for 列表项添加过渡效果 */
+       ul{
+           list-style: none;
+           padding: 0;
+           margin: 0;
+           position: relative;
+       }
+       li{
+           border: 1px dashed #ccc;
+           line-height: 35px;
+           font-size: 12px;
+           padding-left: 10px;
+           margin: 10px 0;
+           background-color: #eee;
+       }
+       .test2-enter,
+       .test2-leave-to{
+           transform: translateY(100px);
+           opacity: 0;
+       }
+       /* 定义元素入场阶段和离场阶段的过渡效果 */
+       .test2-enter-active,
+       .test2-leave-active{
+           transition: all 1s ease;
+       }
+       /* 为即将被删除的元素添加样式，让它脱离标准流 */
+       .test2-leave-active{
+            position: absolute;  
+            width: 100%; 
+        }
+        /* 通过 v-move 这个类，可以让后续的元素类通过过渡渐渐顶上去 */
+        .test2-move{
+            transition: all 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <button @click="flag=!flag">Toggle</button>
+        <!-- 1.使用 Vue 框架提供的 transition 标签，把需要添加的动画效果的元素包裹起来 -->
+        <!-- 增加 name 属性 .v-enter 改为 ."name的值"-enter  从而实现多组不同过渡效果 -->
+        <transition name="test">
+            <h3 v-if="flag">奔跑的五花肉！</h3>
+        </transition>
+        <hr>
+
+        <!-- 第三方动画库实现过渡动画 -->
+        <button @click="flag1=!flag1">Toggle</button>
+        <!-- enter-active-class 指定入场的类名 -->
+        <!-- leave-active-class 指定离场的类名 -->
+        <transition enter-active-class="bounceInDown" leave-active-class="bounceOutDown">
+            <h4 v-show="flag1" class="animated">animate 实现动画</h4>
+        </transition>
+        <hr>
+
+        <!-- 为 v-for 列表项添加过渡效果 -->
+        <div>
+            <input type="text" v-model="name">
+            <button @click="add">Add</button>
+        </div>
+        <!-- 默认情况下 transition-group 渲染为 span  -->
+        <!-- tag是标签的意思 强制将 transition-group 渲染为ul -->
+        <transition-group name="test2" tag="ul">
+            <!-- 注意：为列表项添加动画，key 的值一定要是 item.id -->
+            <li v-for="(item,i) in list" :key="item.id" @click="remove(i)">{{item.id}}---{{item.name}}</li>
+        </transition-group>
+
+    </div>
+    <script>
+        const vm = new Vue({
+            el:'.app',
+            data:{
+                flag: false,
+                flag1:false,
+                newId: 4,
+                list:[
+                    {id:1, name:"德"},
+                    {id:2, name:"欧"},
+                    {id:3, name:"Tay"},
+                    {id:4, name:"New"}
+                ],
+                name:""
+            },
+            methods: {
+                add(){
+                    const newInfo = { id: ++this.newId, name: this.name }
+                    this.list.push(newInfo)
+                    this.name=''
+                },
+                remove(i){
+                    this.list.splice(i,1)
+                }
+            },
+        })
+    </script>
+</body>
+</html>
