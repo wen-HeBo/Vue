@@ -1,0 +1,11 @@
+ul{
+    list-style: none;
+}
+#box{
+    width:400px;
+    height: 400px;
+    background-color: red;
+    background: url('../images/pp.jpg');
+    background-size: cover;
+    margin: 15px auto;
+}

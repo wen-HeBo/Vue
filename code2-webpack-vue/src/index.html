@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在 webpack 中使用 Vue</title>
+
+</head>
+<body>
+    <!-- 指定 el 控制的区域 -->
+    <div id="app">
+        <h2>{{msg}}</h2>
+        <ppkritt-test></ppkritt-test>
+        <hr>
+        <my-home></my-home>
+    </div>
+
+    <hr>
+
+    <div id="app2">
+        <h2>{{msg}}</h2>
+        <billkin-test></billkin-test>
+
+        <hr>
+        <my-parent></my-parent>
+        <hr>
+
+        <div id="bkpp">
+            <my-bk></my-bk>
+            <hr>
+            <my-pp></my-pp>
+        </div>
+    </div>
+
+    <div id="app3">
+        <h3>{{msg}}</h3>
+    </div>
+
+</body>
+</html>
